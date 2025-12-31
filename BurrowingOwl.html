@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>TAU Proxy</title>
+  <style>
+    *{ margin: 0px;
+      padding: 0px;
+      transition: all 0.25s;
+    }
+    body { font-family: Arial; 
+          background:#111; 
+          color:#eee;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          overflow-y: overlay;
+          width: 100vw;
+          height: 100vh; }
+    #log { height:50vh; 
+          overflow:auto; 
+          border:1px solid darkorchid; 
+          padding:5px; 
+          color:green; 
+          border-radius: 5px; 
+          width: 50vw;
+          margin-bottom: 3vh; }
+    input { width: 50vw; 
+            height: 5vh; 
+            border-radius: 3%; 
+            color:red; 
+            background-color: #111; 
+            border: 1px solid darkorchid; 
+            border-radius: 5px;
+            margin-bottom: 3vh; }
+    button { width: 10vw; 
+            height: 10vh; 
+            border-radius: 3%; 
+            background-color: darkorchid; 
+            border: 1px solid darkorchid; }
+    h2 { color:darkorchid;
+        margin-bottom: 2vh;} 
+  </style>
+  </head>
+  <body>
+    <h2>TAU-VII-1 Proxy</h2>
+    <div id="log"></div><br>
+    <input id="msg" placeholder="Type Echo..." />
+    <button onclick="send()">Send Echo</button>
+
+    <script> 
+      function log(t){
+      let d=document.getElementById("log");
+      d.innerHTML+=t+"<br>";
+      d.scrollTop=d.scrollHeight;
+      }
+
+      async function send(){
+        let m=msg.value;
+        msg.value="";
+        log("Echo: "+m);
+
+        let r = await fetch("/chat?m="+encodeURIComponent(m), {
+          headers: { "X-TAU-TOKEN": "TAU-SECURE-TOKEN-001" }
+        });
+
+        let t = await r.text();
+        log("TAU: "+t);
+      }
+    </script>
+  </body>
+</html>
